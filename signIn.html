@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+      }
+      
+      body {
+        font-size: 16px;
+        line-height: 1.5;
+background-image: url(img/homejeep.jpg);
+background-size: 100%;
+      }
+      
+      .container {
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top:80px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: center;
+      }
+      
+      h1 {
+        margin-bottom: 20px;
+      }
+      
+      form {
+        
+        display: flex;
+        flex-direction: column;
+      }
+      
+      label {
+        margin-bottom: 5px;
+        text-align: left;
+      }
+      
+      input[type="email"],
+      input[type="password"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+      }
+      
+      button[type="submit"] {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      button[type="submit"]:hover {
+        background-color: #0062cc;
+      }
+      
+      p {
+        margin-top: 20px;
+        font-size: 0.8rem;
+      }
+      
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      
+      a:hover {
+        text-decoration: underline;
+      }
+      </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign In</h1>
+        <form>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit" id="sub" name="Sign In" onclick="window.location.href = 'index.html'">Sign In</button>
+          <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        </form>
+      </div>
+</body>
+
+</html>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+  import { getDatabase,set,ref} from "https://www.gstatic.com/firebasejs/9.20.0/firebase-database.js";
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDJuuYUP-l8PpeeQQafDWRua3LKJSJjd5g",
+    authDomain: "carsign-73ab8.firebaseapp.com",
+    projectId: "carsign-73ab8",
+    storageBucket: "carsign-73ab8.appspot.com",
+    messagingSenderId: "303572150254",
+    appId: "1:303572150254:web:13969d7fcf08c1315790ff"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const database = getDatabase(app);
+
+  sub.addEventListener('click',(e)=>{
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+
+signInWithEmailAndPassword(auth,email, password)
+.then((userCredential) => {
+  // signed
+  const user = userCredential.user;
+  var lgDate = new Date();
+  updater(ref(database,'users/' + user.uid),{
+  last_login: lgDate,
+})
+
+  .then(() => {
+  // Data saved successfully!
+  alert('user Login sucessfully');
+  
+
+})
+.catch((error) => {
+  // The write failed...
+  alert(error);
+});
+
+})
+.catch((error) => {
+  // The write failed...
+  const errorCode = error.code;
+  const errorMessage = error.message;
+  alert(errorMessage);
+});
+  });
+</script>
